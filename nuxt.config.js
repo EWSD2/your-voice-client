@@ -1,9 +1,7 @@
-import colors from 'vuetify/es5/util/colors'
-
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    titleTemplate: '%s - your-voice-client',
+    titleTemplate: '%s -Your Voice Magazine',
     title: 'your-voice-client',
     meta: [
       { charset: 'utf-8' },
@@ -47,16 +45,15 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
       themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
+        light: {
+          primary: '#212221',
+          accent: '#44449b',
+          secondary: '#1181b2',
+          info: '#00bcd4',
+          warning: '#ff5722',
+          error: '#f32516',
+          success: '#8bc34a'
         }
       }
     }
