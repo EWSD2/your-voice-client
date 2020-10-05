@@ -12,7 +12,7 @@
         <v-list-item
           v-for="(item, i) in sideNavItems"
           :key="i"
-          :to="item.to"
+          :to="item.link"
           router
           exact
         >
@@ -92,7 +92,7 @@ export default {
     sideNavItems () {
       const items = [
         // { icon: 'mdi-apps', title: 'Home', to: '/' },
-        { icon: 'mdi-lock-open', title: 'Sign In', link: '/login' }
+        { icon: 'mdi-lock-open', title: 'Sign In', link: '/auth/login' }
       ]
 
       return items
@@ -101,7 +101,7 @@ export default {
     horizontalNavItems () {
       const items = [
         // { icon: 'mdi-apps', title: 'Home', to: '/' },
-        { icon: 'mdi-lock-open', title: 'Sign In', link: '/login' }
+        { icon: 'mdi-lock-open', title: 'Sign In', link: '/auth/login' }
       ]
 
       return items
