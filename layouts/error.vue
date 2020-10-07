@@ -1,5 +1,5 @@
 <template>
-  <v-app dark style="background: #212221" class="ma-0 pa-0">
+  <v-app dark>
     <v-container fluid fill-height text-center>
       <v-row>
         <v-col
@@ -68,5 +68,7 @@ export default {
 </script>
 
 <style scoped>
-
+.v-main {
+  background-color: #212221 !important;
+}
 </style>
