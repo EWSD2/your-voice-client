@@ -69,7 +69,7 @@ export default {
 
   apollo: {
     clientConfigs: {
-      default: '~apollo/apollo-config.js'
+      default: '~/apollo/apollo-config.js'
     }
   },
 
