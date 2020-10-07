@@ -60,6 +60,7 @@ export default {
     }
   },
 
+  // Loading indicator configuration
   loading: {
     color: '#44449b',
     height: '5px'
