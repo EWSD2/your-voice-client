@@ -75,5 +75,10 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
+  },
+
+  // Install global router middleware
+  router: {
+    middleware: ['checkAuth']
   }
 }
