@@ -36,7 +36,8 @@ export default {
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/apollo'
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
@@ -64,6 +65,12 @@ export default {
   loading: {
     color: '#44449b',
     height: '5px'
+  },
+
+  apollo: {
+    clientConfigs: {
+      default: '~apollo/apollo-config.js'
+    }
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
