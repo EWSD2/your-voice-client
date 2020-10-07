@@ -7,7 +7,8 @@ export default () => {
     errorHandler: '~/plugins/apollo-error-handlers.js',
     authenticationType: '',
     cookieAttributes: {
-      secure: true
+      secure: true,
+      sameSite: 'Strict'
     }
   }
 }
