@@ -1,7 +1,8 @@
 export const state = () => ({
   error: null,
   authError: null,
-  isAuthenticated: false
+  isAuthenticated: false,
+  userRole: ''
 })
 
 export const mutations = {
@@ -15,11 +16,16 @@ export const mutations = {
 
   setIsAuthenticated: (state, payload) => {
     state.isAuthenticated = payload
+  },
+
+  setUserRole: (state, payload) => {
+    state.userRole = payload
   }
 }
 
 export const getters = {
   error: state => state.error,
   authError: state => state.authError,
-  isAuthenticated: state => state.isAuthenticated
+  isAuthenticated: state => state.isAuthenticated,
+  userRole: state => state.userRole
 }
