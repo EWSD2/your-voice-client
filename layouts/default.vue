@@ -107,21 +107,84 @@ export default {
   computed: {
     ...mapGetters(['isAuthenticated', 'userRole']),
     sideNavItems () {
-      const items = [
+      let items = [
         // { icon: 'mdi-apps', title: 'Home', to: '/' },
         { icon: 'mdi-lock-open', title: 'Sign In', link: '/auth/login' }
       ]
 
-      if (this.isAuthenticated) {}
+      if (this.isAuthenticated && this.userRole === 'ADMIN') {
+        items = [
+          { icon: 'mdi-apps', title: 'Home', link: '/' },
+          { icon: 'mdi-calendar-range', title: 'List Academic Years', link: '/years' },
+          { icon: 'mdi-calendar-edit', title: 'Create Academic Year', link: '/years/add' }
+        ]
+      } else if (this.isAuthenticated && this.userRole === 'GUEST') {
+        items = [
+          { icon: 'mdi-apps', title: 'Home', link: '/' },
+          { icon: 'mdi-file-chart', title: 'View Reports', link: '/reports' }
+        ]
+      } else if (this.isAuthenticated && this.userRole === 'MANAGER') {
+        items = [
+          { icon: 'mdi-apps', title: 'Home', link: '/' },
+          { icon: 'mdi-view-grid-plus', title: 'View Selections', link: '/selections' }
+        ]
+      } else if (this.isAuthenticated && this.userRole === 'COORDINATOR') {
+        items = [
+          { icon: 'mdi-apps', title: 'Home', link: '/' },
+          { icon: 'mdi-view-grid-plus', title: 'View Selections', link: '/selections' },
+          { icon: 'mdi-format-list-text', title: 'View Submissions', link: '/submissions' }
+        ]
+      } else if (this.isAuthenticated && this.userRole === 'STUDENT') {
+        items = [
+          { icon: 'mdi-apps', title: 'Home', link: '/' },
+          { icon: 'mdi-format-list-text', title: 'View Submissions', link: '/submissions' },
+          { icon: 'mdi-typewriter', title: 'Add Submissions', link: '/submissions/add' }
+        ]
+      } else if (this.isAuthenticated && this.userRole === 'DEV') {
+        items = [
+          { icon: 'mdi-apps', title: 'Home', link: '/' },
+          { icon: 'mdi-calendar-range', title: 'List Academic Years', link: '/years' },
+          { icon: 'mdi-calendar-edit', title: 'Create Academic Year', link: '/years/add' },
+          { icon: 'mdi-file-chart', title: 'View Reports', link: '/reports' },
+          { icon: 'mdi-view-grid-plus', title: 'View Selections', link: '/selections' },
+          { icon: 'mdi-format-list-text', title: 'View Submissions', link: '/submissions' },
+          { icon: 'mdi-typewriter', title: 'Add Submissions', link: '/submissions/add' }
+        ]
+      }
 
       return items
     },
 
     horizontalNavItems () {
-      const items = [
+      let items = [
         // { icon: 'mdi-apps', title: 'Home', to: '/' },
         { icon: 'mdi-lock-open', title: 'Sign In', link: '/auth/login' }
       ]
+
+      if (this.isAuthenticated && this.userRole === 'ADMIN') {
+        items = [
+          { icon: 'mdi-calendar-range', title: 'Academic Years', link: '/years' }
+        ]
+      } else if (this.isAuthenticated && this.userRole === 'GUEST') {
+        items = [
+          { icon: 'mdi-file-chart', title: 'View Reports', link: '/reports' }
+        ]
+      } else if (this.isAuthenticated && this.userRole === 'MANAGER') {
+        items = [
+          { icon: 'mdi-view-grid-plus', title: 'View Selections', link: '/selections' }
+        ]
+      } else if (this.isAuthenticated && this.userRole === 'COORDINATOR') {
+        items = [
+          { icon: 'mdi-view-grid-plus', title: 'View Selections', link: '/selections' },
+          { icon: 'mdi-format-list-text', title: 'View Submissions', link: '/submissions' }
+        ]
+      } else if (this.isAuthenticated && this.userRole === 'STUDENT') {
+        items = [
+          { icon: 'mdi-format-list-text', title: 'View Submissions', link: '/submissions' }
+        ]
+      } else if (this.isAuthenticated && this.userRole === 'DEV') {
+        items.length = 0
+      }
 
       return items
     }
