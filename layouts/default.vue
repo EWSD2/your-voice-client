@@ -57,6 +57,21 @@
           </v-icon>
           {{ item.title }}
         </v-btn>
+        <!-- Signout Button -->
+        <v-btn
+          v-if="isAuthenticated"
+          depressed
+          color="primary"
+          @click="handleSignoutUser"
+        >
+          <v-icon
+            class="hidden-sm-only"
+            left
+          >
+            mdi-exit-to-app
+          </v-icon>
+          Signout
+        </v-btn>
       </v-toolbar-items>
     </v-app-bar>
     <v-main>
@@ -81,6 +96,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -89,11 +105,14 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isAuthenticated', 'userRole']),
     sideNavItems () {
       const items = [
         // { icon: 'mdi-apps', title: 'Home', to: '/' },
         { icon: 'mdi-lock-open', title: 'Sign In', link: '/auth/login' }
       ]
+
+      if (this.isAuthenticated) {}
 
       return items
     },
@@ -105,6 +124,14 @@ export default {
       ]
 
       return items
+    }
+  },
+
+  methods: {
+    handleSignoutUser () {
+      this.$apolloHelpers.onLogout()
+      this.$store.commit('setsetIsAuthenticated', false)
+      this.$router.go()
     }
   }
 }
