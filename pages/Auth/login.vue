@@ -1,14 +1,5 @@
 <template>
-  <v-container text-center class="secondary--text">
-    <v-row align="center">
-      <v-col
-        cols="12"
-      >
-        <h1 class="display-2">
-          Welcome Back!
-        </h1>
-      </v-col>
-    </v-row>
+  <v-container text-center class="secondary--text fill-height">
     <v-row align="center">
       <v-col
         sm="12"
@@ -21,15 +12,9 @@
           offset-md="2"
           elevation="8"
         >
-          <template slot="progress">
-            <v-progress-linear
-              color="accent"
-              indeterminate
-            />
-          </template>
           <v-img
             src="/logo.png"
-            height="300"
+            height="200"
             contain
           />
           <v-row>
@@ -102,6 +87,7 @@ import FormAlert from '~/components/Shared/FormAlert'
 import SIGNIN_USER from '~/apollo/mutations/signinUser.gql'
 export default {
   name: 'Login',
+  layout: 'login',
   components: {
     FormAlert
   },
