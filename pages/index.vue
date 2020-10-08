@@ -1,10 +1,37 @@
 <template>
   <v-container text-center>
     <v-row>
-      <v-col>
-        <h1 class="secondary--text">
-          Welcome to Your Voice, {{ user.firstName }}!
-        </h1>
+      <v-col
+        cols="12"
+      >
+        <v-banner
+          two-line
+        >
+          <v-avatar
+            slot="icon"
+            color="accent"
+            size="40"
+          >
+            <v-icon
+              color="white"
+              icon="mdi-human-greeting"
+            >
+              mdi-human-greeting
+            </v-icon>
+          </v-avatar>
+          <p class="headline secondary--text">
+            Welcome to Your Voice, {{ user.firstName }}!
+            Please select an option from the sidebar.
+          </p>
+          <template v-slot:actions>
+            <v-btn
+              text
+              color="accent"
+            >
+              Profile
+            </v-btn>
+          </template>
+        </v-banner>
       </v-col>
     </v-row>
   </v-container>
