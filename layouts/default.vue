@@ -73,7 +73,7 @@
         </v-btn>
         <!-- Signout Button -->
         <v-btn
-          v-if="isAuthenticated"
+          v-if="user"
           depressed
           color="primary"
           @click="handleSignoutUser"
@@ -119,42 +119,42 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'userRole']),
+    ...mapGetters(['user']),
     sideNavItems () {
       let items = [
         // { icon: 'mdi-apps', title: 'Home', to: '/' },
         { icon: 'mdi-lock-open', title: 'Sign In', link: '/auth/login' }
       ]
 
-      if (this.isAuthenticated && this.userRole === 'ADMIN') {
+      if (this.user && this.user.role === 'ADMIN') {
         items = [
           { icon: 'mdi-apps', title: 'Home', link: '/' },
           { icon: 'mdi-calendar-range', title: 'List Academic Years', link: '/years' },
           { icon: 'mdi-calendar-edit', title: 'Create Academic Year', link: '/years/add' }
         ]
-      } else if (this.isAuthenticated && this.userRole === 'GUEST') {
+      } else if (this.user && this.user.role === 'GUEST') {
         items = [
           { icon: 'mdi-apps', title: 'Home', link: '/' },
           { icon: 'mdi-file-chart', title: 'View Reports', link: '/reports' }
         ]
-      } else if (this.isAuthenticated && this.userRole === 'MANAGER') {
+      } else if (this.user && this.user.role === 'MANAGER') {
         items = [
           { icon: 'mdi-apps', title: 'Home', link: '/' },
           { icon: 'mdi-view-grid-plus', title: 'View Selections', link: '/selections' }
         ]
-      } else if (this.isAuthenticated && this.userRole === 'COORDINATOR') {
+      } else if (this.user && this.user.role === 'COORDINATOR') {
         items = [
           { icon: 'mdi-apps', title: 'Home', link: '/' },
           { icon: 'mdi-view-grid-plus', title: 'View Selections', link: '/selections' },
           { icon: 'mdi-format-list-text', title: 'View Submissions', link: '/submissions' }
         ]
-      } else if (this.isAuthenticated && this.userRole === 'STUDENT') {
+      } else if (this.user && this.user.role === 'STUDENT') {
         items = [
           { icon: 'mdi-apps', title: 'Home', link: '/' },
           { icon: 'mdi-format-list-text', title: 'View Submissions', link: '/submissions' },
           { icon: 'mdi-typewriter', title: 'Add Submissions', link: '/submissions/add' }
         ]
-      } else if (this.isAuthenticated && this.userRole === 'DEV') {
+      } else if (this.user && this.user.role === 'DEV') {
         items = [
           { icon: 'mdi-apps', title: 'Home', link: '/' },
           { icon: 'mdi-calendar-range', title: 'List Academic Years', link: '/years' },
@@ -175,28 +175,28 @@ export default {
         { icon: 'mdi-lock-open', title: 'Sign In', link: '/auth/login' }
       ]
 
-      if (this.isAuthenticated && this.userRole === 'ADMIN') {
+      if (this.user && this.user.role === 'ADMIN') {
         items = [
           { icon: 'mdi-calendar-range', title: 'Academic Years', link: '/years' }
         ]
-      } else if (this.isAuthenticated && this.userRole === 'GUEST') {
+      } else if (this.user && this.user.role === 'GUEST') {
         items = [
           { icon: 'mdi-file-chart', title: 'View Reports', link: '/reports' }
         ]
-      } else if (this.isAuthenticated && this.userRole === 'MANAGER') {
+      } else if (this.user && this.user.role === 'MANAGER') {
         items = [
           { icon: 'mdi-view-grid-plus', title: 'View Selections', link: '/selections' }
         ]
-      } else if (this.isAuthenticated && this.userRole === 'COORDINATOR') {
+      } else if (this.user && this.user.role === 'COORDINATOR') {
         items = [
           { icon: 'mdi-view-grid-plus', title: 'View Selections', link: '/selections' },
           { icon: 'mdi-format-list-text', title: 'View Submissions', link: '/submissions' }
         ]
-      } else if (this.isAuthenticated && this.userRole === 'STUDENT') {
+      } else if (this.user && this.user.role === 'STUDENT') {
         items = [
           { icon: 'mdi-format-list-text', title: 'View Submissions', link: '/submissions' }
         ]
-      } else if (this.isAuthenticated && this.userRole === 'DEV') {
+      } else if (this.user && this.user.role === 'DEV') {
         items.length = 0
       }
 
