@@ -54,7 +54,7 @@ export default {
         return data.getCurrentUser
       },
       result ({ data }) {
-        this.$store.commit('setUserRole', data.getCurrentUser.role)
+        this.$store.commit('setUser', data.getCurrentUser)
       }
     }
   },
