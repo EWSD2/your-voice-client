@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'AcademicYear',
+  name: 'SubmissionDetails',
   asyncData ({ params }) {
     return {
       sub: params.id
