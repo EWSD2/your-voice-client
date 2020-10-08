@@ -27,6 +27,7 @@
             <v-btn
               text
               color="accent"
+              to="/auth/profile"
             >
               Profile
             </v-btn>
