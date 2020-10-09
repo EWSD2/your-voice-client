@@ -1,0 +1,9 @@
+query($yearId:ID!){
+  getAcademicYear(yearId: $yearId) {
+    title
+    startDate
+    submissionClose
+    endDate
+    status
+  }
+}
