@@ -82,7 +82,6 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie'
 import { mapGetters } from 'vuex'
 import FormAlert from '~/components/Shared/FormAlert'
 import SIGNIN_USER from '~/apollo/mutations/signinUser.gql'
@@ -111,14 +110,6 @@ export default {
   }),
   computed: {
     ...mapGetters(['error'])
-  },
-  created () {
-    const authToken = Cookies.get('apollo-token')
-    if (authToken) {
-      this.$apolloHelpers.onLogin(authToken)
-      this.$store.commit('setIsAuthenticated', true)
-      this.$router.push('/')
-    }
   },
   methods: {
     async handleSigninUser () {
