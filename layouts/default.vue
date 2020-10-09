@@ -119,7 +119,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user']),
+    ...mapGetters(['user', 'isAuthenticated']),
     sideNavItems () {
       let items = [
         // { icon: 'mdi-apps', title: 'Home', to: '/' },
