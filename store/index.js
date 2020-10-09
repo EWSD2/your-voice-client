@@ -26,5 +26,6 @@ export const mutations = {
 export const getters = {
   error: state => state.error,
   authError: state => state.authError,
-  user: state => state.user
+  user: state => state.user,
+  isAuthenticated: state => state.isAuthenticated
 }
