@@ -34,13 +34,13 @@
                   />
                 </v-avatar>
               </v-col>
-              <v-col class="py-0">
+              <v-col class="py-6">
                 <v-list-item
                   color="rgba(0, 0, 0, .4)"
                   dark
                 >
                   <v-list-item-content>
-                    <v-list-item-title class="title">
+                    <v-list-item-title class="display-1">
                       {{ user.firstName }} {{ user.lastName }}
                     </v-list-item-title>
                     <v-list-item-subtitle>
