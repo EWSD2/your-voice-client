@@ -1,0 +1,17 @@
+mutation (
+  $title: String!
+  $startDate: String!
+  $endDate: String!
+  $submissionClose: String
+  $status: String
+) {
+  createAcademicYear(
+    title: $title,
+    startDate: $startDate,
+    endDate: $endDate,
+    submissionClose: $submissionClose
+    status: $status
+  ){
+    _id
+  }
+}
