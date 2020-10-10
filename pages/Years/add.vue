@@ -3,8 +3,8 @@
     <v-row wrap>
       <v-col
         sm="12"
-        md="8"
-        offset-md="2"
+        md="10"
+        offset-md="1"
       >
         <h1 class="secondary--text">
           Create an Academic Year
