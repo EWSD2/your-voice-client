@@ -77,7 +77,7 @@
                   <v-text-field
                     v-model="endDate"
                     label="End Date"
-                    :rules="endDateRules"
+                    :rules="[endDateRules2.exists(), endDateRules2.notBeforeStart(startDate)]"
                     readonly
                     v-bind="attrs"
                     v-on="on"
@@ -87,7 +87,6 @@
                   v-model="endDate"
                   color="secondary"
                   @input="menu2 = false"
-                  @change="checkEndDate"
                 />
               </v-menu>
             </v-col>
@@ -178,10 +177,14 @@ export default {
       // check if a startDate has been provided
       date => !!date || 'Start Date required'
     ],
-    endDateRules: [
-      // check if a startDate has been provided
-      date => !!date || 'End Date required'
-    ]
+    endDateRules2: {
+      notBeforeStart (start) {
+        return date => date > start || 'The Year cannot end before beginning!'
+      },
+      exists () {
+        return date => !!date || 'End Date required'
+      }
+    }
   }),
   methods: {
     async createYear () {
