@@ -24,6 +24,7 @@
           </v-list-item-content>
         </v-list-item>
         <v-divider v-if="isAuthenticated" />
+        <!-- Profile Link -->
         <v-list-item
           v-if="isAuthenticated"
           to="/auth/profile"
@@ -35,6 +36,21 @@
           </v-list-item-action>
           <v-list-item-content>
             Profile
+          </v-list-item-content>
+        </v-list-item>
+        <!-- Signout Link -->
+        <v-list-item
+          v-if="isAuthenticated"
+          to="#"
+          @click="handleSignoutUser"
+        >
+          <v-list-item-action>
+            <v-icon>
+              mdi-exit-to-app
+            </v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            Signout
           </v-list-item-content>
         </v-list-item>
       </v-list>
