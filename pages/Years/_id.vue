@@ -4,7 +4,7 @@
       <v-col
         sm="12"
         md="8"
-        offset-md="8"
+        offset-md="2"
       >
         <h1 class="secondary--text">
           Academic Year {{ year.title }}

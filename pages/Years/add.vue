@@ -4,7 +4,7 @@
       <v-col
         sm="12"
         md="8"
-        offset-md=""
+        offset-md="2"
       >
         <h1 class="secondary--text">
           Create an Academic Year
