@@ -1,0 +1,16 @@
+mutation(
+  $yearId: ID!
+  $status: String!
+){
+  editAcademicYearStatus(
+    yearId: $yearId,
+    status: $status
+  ){
+    _id
+    title
+    startDate
+    submissionClose
+    endDate
+    status
+  }
+}

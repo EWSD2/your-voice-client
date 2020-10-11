@@ -1,0 +1,20 @@
+mutation(
+  $yearId: ID!
+  $startDate: String!
+  $endDate: String!
+  $submissionClose: String!
+) {
+  editAcademicYearDates(
+    yearId:$yearId,
+    startDate: $startDate,
+    endDate: $endDate,
+    submissionClose:$submissionClose
+  ){
+    _id
+    title
+    startDate
+    submissionClose
+    endDate
+    status
+  }
+}
