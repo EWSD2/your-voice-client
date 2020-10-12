@@ -157,10 +157,11 @@ export default {
   data () {
     return {
       drawer: false,
-      authErrorSnackbar: true,
+      authErrorSnackbar: false,
       title: 'Your Voice Magazine'
     }
   },
+
   computed: {
     ...mapGetters(['user', 'isAuthenticated', 'authError']),
     sideNavItems () {
@@ -244,6 +245,15 @@ export default {
       }
 
       return items
+    }
+  },
+
+  watch: {
+    authError (value) {
+      // Show auth snackbar if there is an authError
+      if (value != null) {
+        this.authErrorSnackbar = true
+      }
     }
   },
 
