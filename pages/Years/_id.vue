@@ -114,7 +114,12 @@
       persistent
       max-width="650px"
     >
-      <v-card>
+      <v-card
+        sm="12"
+        md="8"
+        offset-md="2"
+        shaped
+      >
         <v-card-title class="headline secondary--text">
           Update Year
         </v-card-title>
@@ -326,7 +331,7 @@ export default {
   },
   methods: {
     formatDate (date) {
-      return dayjs.tz(parseInt(date), 'America/Port_of_Spain').add(4, 'h').format('ddd, DD MMM YYYY')
+      return new Date(parseInt(date)).toLocaleDateString()
     },
 
     async toggleStatus () {
