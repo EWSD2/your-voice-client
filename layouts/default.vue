@@ -107,6 +107,32 @@
     <v-main>
       <v-container fluid>
         <nuxt />
+        <v-snackbar
+          v-if="authError"
+          v-model="authErrorSnackbar"
+          color="warning"
+          :timeout="5000"
+          vertical
+          multiline
+          bottom
+          left
+        >
+          <v-spacer />
+          <v-icon class="mr-3">
+            mdi-cancel
+          </v-icon>
+          {{ authError.message }}
+          <v-btn
+            dark
+            depressed
+            color="info"
+            small
+            right
+            to="/auth/login"
+          >
+            Sign In
+          </v-btn>
+        </v-snackbar>
       </v-container>
     </v-main>
     <v-footer
@@ -131,11 +157,12 @@ export default {
   data () {
     return {
       drawer: false,
+      authErrorSnackbar: true,
       title: 'Your Voice Magazine'
     }
   },
   computed: {
-    ...mapGetters(['user', 'isAuthenticated']),
+    ...mapGetters(['user', 'isAuthenticated', 'authError']),
     sideNavItems () {
       let items = [
         // { icon: 'mdi-apps', title: 'Home', to: '/' },
