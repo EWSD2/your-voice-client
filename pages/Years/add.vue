@@ -6,16 +6,16 @@
         md="10"
         offset-md="1"
       >
-        <h1 class="secondary--text">
-          Create an Academic Year
-        </h1>
         <v-card
           sm="12"
           md="8"
-          offset-md="8"
+          offset-md="2"
           shaped
           elevation="8"
         >
+          <v-card-title class="headline secondary--text">
+            Create an Academic Year
+          </v-card-title>
           <v-form
             ref="form"
             v-model="isFormValid"
