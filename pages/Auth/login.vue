@@ -113,26 +113,28 @@ export default {
   },
   methods: {
     async handleSigninUser () {
-      const username = this.username
-      const password = this.password
-      try {
-        await this.$apolloHelpers.onLogout()
-        await this.$apollo.mutate({
-          mutation: SIGNIN_USER,
-          variables: {
-            username,
-            password
-          }
-        })
-          .then(({ data }) => {
-            if (data.signinUser.token) {
-              this.$apolloHelpers.onLogin(data.signinUser.token)
-              this.$store.commit('setIsAuthenticated', true)
-              this.$router.push('/')
+      if (this.$refs.form.validate()) {
+        const username = this.username
+        const password = this.password
+        try {
+          await this.$apolloHelpers.onLogout()
+          await this.$apollo.mutate({
+            mutation: SIGNIN_USER,
+            variables: {
+              username,
+              password
             }
           })
-      } catch (err) {
-        this.$store.commit('setError', err)
+            .then(({ data }) => {
+              if (data.signinUser.token) {
+                this.$apolloHelpers.onLogin(data.signinUser.token)
+                this.$store.commit('setIsAuthenticated', true)
+                this.$router.push('/')
+              }
+            })
+        } catch (err) {
+          this.$store.commit('setError', err)
+        }
       }
     }
   },
