@@ -47,7 +47,8 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/apollo'
+    '@nuxtjs/apollo',
+    '@nuxtjs/firebase'
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
@@ -77,9 +78,27 @@ export default {
     height: '5px'
   },
 
+  // Apollo config
   apollo: {
     clientConfigs: {
       default: '~/apollo/apollo-config.js'
+    }
+  },
+
+  // Firebase config
+  firebase: {
+    config: {
+      apiKey: 'AIzaSyByz_LxQsq7IycuyVxSlJ81fMM-iahZSeQ',
+      authDomain: 'ewsd-your-voice.firebaseapp.com',
+      databaseURL: 'https://ewsd-your-voice.firebaseio.com',
+      projectId: 'ewsd-your-voice',
+      storageBucket: 'ewsd-your-voice.appspot.com',
+      messagingSenderId: '760392566777',
+      appId: '1:760392566777:web:9217aeff237e102b26df28',
+      measurementId: 'G-HMVF0K7C1P'
+    },
+    services: {
+      storage: true
     }
   },
 
