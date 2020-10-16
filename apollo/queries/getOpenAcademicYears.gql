@@ -1,0 +1,7 @@
+query {
+  getOpenAcademicYears{
+    _id
+    title
+    submissionClose
+  }
+}
