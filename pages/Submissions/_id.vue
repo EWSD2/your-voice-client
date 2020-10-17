@@ -10,15 +10,20 @@
         <v-divider />
         <v-card
           shaped
-          max-width="375"
+          max-width="570"
           class="mx-auto mt-12"
           elevation="8"
         >
           <v-card-title>
             {{ submission.title }}
           </v-card-title>
+          <v-img
+            v-if="submission.picture.path"
+            height="200"
+            :src="submission.picture.path"
+          />
           <v-card-subtitle>
-            {{ `By ${ submission.submittedBy.firstName } ${ submission.submittedBy.lastName } from ${ submission.submittedBy.faculty }` }}
+            {{ `By ${ submission.submittedBy.firstName } ${ submission.submittedBy.lastName } in ${ submission.faculty }` }}
           </v-card-subtitle>
           <v-list two-line>
             <v-list-item>
@@ -45,7 +50,7 @@
               <v-list-item-content>
                 <v-list-item-title>Article Download</v-list-item-title>
                 <v-list-item-subtitle>
-                  {{ submission.article.path }}
+                  <a :href="submission.article.path">Download</a>
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
@@ -70,7 +75,10 @@ export default {
           lastName: '',
           faculty: ''
         },
-        createdDate: ''
+        createdDate: '',
+        article: {
+          path: ''
+        }
       }
     }
   },

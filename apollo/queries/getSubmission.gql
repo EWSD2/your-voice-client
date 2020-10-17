@@ -1,15 +1,16 @@
 query($submissionId: ID!) {
-  getSubmission(
-    submissionId: $submissionId
-  ) {
+  getSubmission(submissionId: $submissionId){
     title
     createdDate
+    faculty
     submittedBy {
       firstName
       lastName
-      faculty
     }
-    article {
+    article{
+      path
+    }
+    picture{
       path
     }
   }
