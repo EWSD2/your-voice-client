@@ -1,17 +1,15 @@
 mutation(
   $title: String!
   $userId: ID!
-  $username: String!
   $createdDate: String!
   $yearId: ID!
   $faculty: String!
-  $article: Upload!
-  $picture: Upload
+  $article: MediaInput!
+  $picture: MediaInput
 ) {
   makeSubmission(
     title: $title,
     userId: $userId,
-    username: $username,
     createdDate: $createdDate,
     yearId: $yearId,
     faculty: $faculty,

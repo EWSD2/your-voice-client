@@ -178,28 +178,31 @@ export default {
   methods: {
     async makeSubmission () {
       if (this.$refs.form.validate()) {
+        this.$nuxt.$loading.start()
         const userId = this.user._id
-        const faculty = this.user.faculty
+        const faculty = this.user.faculty.toLowerCase()
         const username = this.user.username
         const createdDate = new Date()
         const title = this.title
         const yearId = this.yearId
         const article = this.article
         const picture = this.picture
-        console.log(userId, faculty, username, createdDate, this.title, this.yearId, this.article, this.picture)
-        this.$nuxt.$loading.start()
+        const articleDetails = await this.uploadFile(article, username)
+        let pictureDetails = null
+        if (picture) {
+          pictureDetails = await this.uploadFile(picture, username)
+        }
 
         await this.$apollo.mutate({
           mutation: MAKE_SUBMISSION,
           variables: {
             title,
             userId,
-            username,
             createdDate,
             yearId,
             faculty,
-            article,
-            picture
+            article: articleDetails,
+            picture: pictureDetails
           }
         })
           .then(({ data }) => {
@@ -210,8 +213,29 @@ export default {
             }
           })
           .catch((err) => {
+            this.$nuxt.$loading.finish()
             this.$store.commit('setError', err)
           })
+      }
+    },
+
+    async uploadFile (file, username) {
+      const storageRef = this.$fireStorage.ref(`/submissions/${username}/${file.name}`)
+      let url
+      try {
+        await storageRef.put(file)
+        url = await storageRef.getDownloadURL()
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: `${err.message}`
+        })
+      }
+      return {
+        filename: file.name,
+        mimetype: file.type,
+        path: url
       }
     }
   },
