@@ -43,7 +43,7 @@
       </v-col>
     </v-row>
     <v-row
-      v-if="submissions"
+      v-if="submissions.length > 0"
       wrap
     >
       <v-col
