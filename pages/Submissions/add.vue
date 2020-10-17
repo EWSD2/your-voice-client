@@ -87,6 +87,19 @@
                 />
               </v-col>
               <v-col
+                cols="10"
+                md="8"
+                offset="1"
+                offset-md="2"
+              >
+                <v-checkbox
+                  v-model="terms"
+                  label="I agree to the Terms and Conditions"
+                  :rules="termsRules"
+                  color="secondary"
+                />
+              </v-col>
+              <v-col
                 cols="12"
                 md="8"
                 offset-md="2"
@@ -130,6 +143,7 @@ export default {
     academicYears: [],
     article: null,
     picture: null,
+    terms: true,
     titleRules: [
       // Check if Title has been provided
       title => !!title || 'Submission Title is required',
@@ -142,6 +156,9 @@ export default {
     ],
     articleRules: [
       article => !!article || 'Please select the article to be submitted'
+    ],
+    termsRules: [
+      terms => terms === true || 'Please agree to the terms and conditions'
     ]
   }),
 
