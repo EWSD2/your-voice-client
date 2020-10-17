@@ -110,5 +110,10 @@ export default {
   // Install global router middleware
   router: {
     middleware: ['checkAuth']
+  },
+
+  // Implement environment variables
+  env: {
+    SENDGRID_API_KEY: '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'
   }
 }
