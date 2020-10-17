@@ -19,7 +19,7 @@
               align="end"
               class="fill-height"
             >
-              <v-col class="pb-10">
+              <v-col class="pb-10 mb-4">
                 <v-list-item
                   color="rgba(0, 0, 0, .4)"
                   dark
@@ -32,7 +32,7 @@
                       <strong>
                         {{ user.role }}
                       </strong>
-                      in {{ user.faculty }}
+                      in {{ getPrettyFaculty(user.faculty) }}
                     </v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
@@ -43,7 +43,7 @@
       </v-col>
     </v-row>
     <v-row
-      v-if="submissions.length > 0"
+      v-if="submissions && submissions.length > 0"
       wrap
     >
       <v-col
@@ -74,11 +74,6 @@
                   :src="sub.picture.path"
                   height="200"
                 />
-                <v-img
-                  v-else
-                  src="https://picsum.photos/200"
-                  height="200"
-                />
                 <v-card-title class="accent--text">
                   {{ sub.title }}
                 </v-card-title>
@@ -99,10 +94,31 @@ import GET_CURRENT_USER from '~/apollo/queries/getCurrentUser.gql'
 import GET_USER_SUBMISSIONS from '~/apollo/queries/getUserSubmissions.gql'
 export default {
   name: 'Profile',
+
   data: () => ({
     user: null,
     submissions: null
   }),
+
+  methods: {
+    getPrettyFaculty (faculty) {
+      let prettified
+      switch (faculty) {
+        case 'MATH':
+          prettified = 'Mathematics'
+          break
+        case 'COMPSCI':
+          prettified = 'Computer Science'
+          break
+        case 'HUMANITIES':
+          prettified = 'Humanities'
+          break
+      }
+
+      return prettified
+    }
+  },
+
   apollo: {
     user: {
       query: GET_CURRENT_USER,
@@ -111,6 +127,7 @@ export default {
         return data.getCurrentUser
       }
     },
+
     submissions: {
       query: GET_USER_SUBMISSIONS,
       prefetch: true,
@@ -124,6 +141,7 @@ export default {
       }
     }
   },
+
   head: {
     title: 'Your Profile'
   }
