@@ -78,12 +78,25 @@ export default {
         createdDate: '',
         article: {
           path: ''
+        },
+        picture: {
+          path: ''
         }
       }
     }
   },
 
   data: () => ({ }),
+
+  watch: {
+    sub (newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.$apollo.queries.submission.refetch({
+          submissionId: this.newValue
+        })
+      }
+    }
+  },
 
   methods: {
     formatDate (date) {
