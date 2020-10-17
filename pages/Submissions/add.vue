@@ -1,5 +1,10 @@
 <template>
   <v-container text-center class="secondary--text">
+    <v-row v-if="error">
+      <v-col>
+        <form-alert :message="error.message" />
+      </v-col>
+    </v-row>
     <v-row>
       <v-col
         sm="12"
