@@ -14,7 +14,7 @@
           class="mx-auto mt-12"
           elevation="8"
         >
-          <v-card-title>
+          <v-card-title class="secondary--text">
             {{ submission.title }}
           </v-card-title>
           <v-img
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import GET_SUBMISSION from '~/apollo/queries/getSubmission.gql'
+import GET_ARTICLE from '~/apollo/queries/getArticle.gql'
 export default {
   name: 'SubmissionDetails',
   asyncData ({ params }) {
@@ -106,15 +106,15 @@ export default {
 
   apollo: {
     submission: {
-      query: GET_SUBMISSION,
+      query: GET_ARTICLE,
       prefetch: true,
       variables () {
         return {
-          submissionId: this.sub
+          articleId: this.sub
         }
       },
       update (data) {
-        return data.getSubmission
+        return data.getArticle
       }
     }
   },

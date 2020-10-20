@@ -1,5 +1,5 @@
 query($userId:ID!){
-  getUserSubmissions(userId: $userId) {
+  getUserArticles(userId: $userId) {
     _id
     title
     createdDate

@@ -7,7 +7,7 @@ mutation(
   $article: MediaInput!
   $picture: MediaInput
 ) {
-  makeSubmission(
+  createArticle(
     title: $title,
     userId: $userId,
     createdDate: $createdDate,

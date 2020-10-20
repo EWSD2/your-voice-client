@@ -1,5 +1,5 @@
-query($submissionId: ID!) {
-  getSubmission(submissionId: $submissionId){
+query($articleId: ID!) {
+  getArticle(articleId: $articleId){
     title
     createdDate
     faculty

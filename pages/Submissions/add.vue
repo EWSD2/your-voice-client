@@ -134,7 +134,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import GET_OPEN_AY from '~/apollo/queries/getOpenAcademicYears.gql'
-import MAKE_SUBMISSION from '~/apollo/mutations/makeSubmission.gql'
+import CREATE_ARTICLE from '~/apollo/mutations/createArticle.gql'
 const Swal = require('sweetalert2')
 
 export default {
@@ -216,7 +216,7 @@ export default {
         }
 
         await this.$apollo.mutate({
-          mutation: MAKE_SUBMISSION,
+          mutation: CREATE_ARTICLE,
           variables: {
             title,
             userId,
@@ -229,7 +229,7 @@ export default {
         })
           .then(({ data }) => {
             this.$nuxt.$loading.finish()
-            const id = data.makeSubmission._id
+            const id = data.createArticle._id
             if (id) {
               this.$router.push(`/submissions/${id}`)
             }

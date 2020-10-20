@@ -91,7 +91,7 @@
 
 <script>
 import GET_CURRENT_USER from '~/apollo/queries/getCurrentUser.gql'
-import GET_USER_SUBMISSIONS from '~/apollo/queries/getUserSubmissions.gql'
+import GET_USER_ARTICLES from '~/apollo/queries/getUserArticles.gql'
 export default {
   name: 'Profile',
 
@@ -104,7 +104,7 @@ export default {
     getPrettyFaculty (faculty) {
       let prettified
       switch (faculty) {
-        case 'MATH':
+        case 'MATHEMATICS':
           prettified = 'Mathematics'
           break
         case 'COMPSCI':
@@ -112,6 +112,9 @@ export default {
           break
         case 'HUMANITIES':
           prettified = 'Humanities'
+          break
+        case 'ADMIN':
+          prettified = 'Administration'
           break
       }
 
@@ -129,7 +132,7 @@ export default {
     },
 
     submissions: {
-      query: GET_USER_SUBMISSIONS,
+      query: GET_USER_ARTICLES,
       prefetch: true,
       variables () {
         return {
@@ -137,7 +140,7 @@ export default {
         }
       },
       update (data) {
-        return data.getUserSubmissions
+        return data.getUserArticles
       }
     }
   },
