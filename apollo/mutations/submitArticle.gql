@@ -1,0 +1,28 @@
+mutation(
+  $articleId: ID!
+  $student: String!
+  $faculty: String!
+){
+  submitArticle(
+    articleId: $articleId,
+    student: $student,
+    faculty: $faculty
+  ) {
+    title
+    createdDate
+    editDate
+    faculty
+    isSubmitted
+    toBePublished
+    submittedBy {
+      firstName
+      lastName
+    }
+    article{
+      path
+    }
+    picture{
+      path
+    }
+  }
+}

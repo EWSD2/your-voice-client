@@ -6,8 +6,6 @@
         md="10"
         offset-md="1"
       >
-        <h1>Submission {{ sub }}</h1>
-        <v-divider />
         <v-card
           shaped
           max-width="570"
@@ -22,8 +20,10 @@
             height="200"
             :src="submission.picture.path"
           />
-          <v-card-subtitle>
-            {{ `By ${ submission.submittedBy.firstName } ${ submission.submittedBy.lastName } in ${ submission.faculty }` }}
+          <v-card-subtitle
+            class="overline"
+          >
+            {{ `By ${ submission.submittedBy.firstName } ${ submission.submittedBy.lastName } in ${ getPrettyFaculty(submission.faculty) }` }}
           </v-card-subtitle>
           <v-list two-line>
             <v-list-item>
@@ -67,8 +67,10 @@
 
               <v-list-item-content>
                 <v-list-item-title>Article Submitted</v-list-item-title>
-                <v-list-item-subtitle>
-                  {{ submission.isSubmitted }}
+                <v-list-item-subtitle
+                  :class="`${statusColour(submission.isSubmitted)}--text`"
+                >
+                  {{ formatBool(submission.isSubmitted) }}
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
@@ -82,8 +84,10 @@
 
               <v-list-item-content>
                 <v-list-item-title>Article Selected for Publication</v-list-item-title>
-                <v-list-item-subtitle>
-                  {{ submission.toBePublished }}
+                <v-list-item-subtitle
+                  :class="`${statusColour(submission.toBePublished)}--text`"
+                >
+                  {{ formatBool(submission.toBePublished) }}
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
@@ -109,7 +113,7 @@
               color="accent"
               text
               right
-              @click="toggleStatus"
+              @click="submitArticle"
             >
               Submit Article
             </v-btn>
@@ -117,7 +121,6 @@
               color="accent"
               text
               right
-              @click="loadYear"
             >
               Edit Article
             </v-btn>
@@ -129,7 +132,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import GET_ARTICLE from '~/apollo/queries/getArticle.gql'
+import SUBMIT_ARTICLE from '~/apollo/mutations/submitArticle.gql'
+const Swal = require('sweetalert2')
 export default {
   name: 'SubmissionDetails',
   asyncData ({ params }) {
@@ -153,7 +159,13 @@ export default {
     }
   },
 
-  data: () => ({ }),
+  data: () => ({
+    editArticleDialog: false
+  }),
+
+  computed: {
+    ...mapGetters(['user'])
+  },
 
   watch: {
     sub (newValue, oldValue) {
@@ -168,6 +180,67 @@ export default {
   methods: {
     formatDate (date) {
       return new Date(parseInt(date)).toLocaleDateString()
+    },
+
+    formatBool (bool) {
+      return bool === true ? 'Yes' : 'No'
+    },
+
+    statusColour (status) {
+      return status === true ? 'success' : 'normal'
+    },
+
+    getPrettyFaculty (faculty) {
+      let prettified
+      switch (faculty) {
+        case 'MATHEMATICS':
+          prettified = 'Mathematics'
+          break
+        case 'COMPSCI':
+          prettified = 'Computer Science'
+          break
+        case 'HUMANITIES':
+          prettified = 'Humanities'
+          break
+        case 'ADMIN':
+          prettified = 'Administration'
+          break
+      }
+
+      return prettified
+    },
+
+    async submitArticle () {
+      const articleId = this.sub
+      const faculty = this.user.faculty.toLowerCase()
+      const student = `${this.user.firstName} ${this.user.lastName}`
+
+      this.$nuxt.$loading.start()
+      await this.$apollo.mutate({
+        mutation: SUBMIT_ARTICLE,
+        variables: {
+          articleId,
+          student,
+          faculty
+        },
+        update: (store, { data: { submitArticle } }) => {
+          const data = submitArticle
+          store.writeQuery({ query: GET_ARTICLE, data })
+        }
+      })
+        .then(({ data }) => {
+          this.$apollo.queries.submission.refetch()
+          this.$nuxt.$loading.finish()
+          Swal.fire({
+            icon: 'success',
+            title: 'Straight to the Presses!',
+            text: 'Your article has been submitted, and your Coordinator notified!'
+          })
+        })
+        .catch((err) => {
+          this.$nuxt.$loading.finish()
+          this.$store.commit('setError', err)
+        })
     }
   },
 
