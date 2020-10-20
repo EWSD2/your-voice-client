@@ -34,16 +34,64 @@
               </v-list-item-icon>
 
               <v-list-item-content>
-                <v-list-item-title>Submitted</v-list-item-title>
+                <v-list-item-title>Created</v-list-item-title>
                 <v-list-item-subtitle>
                   {{ formatDate(submission.createdDate) }}
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
+
+            <v-list-item
+              v-if="submission.editDate"
+            >
+              <v-list-item-icon>
+                <v-icon color="accent">
+                  mdi-file-edit-outline
+                </v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>Last Edited</v-list-item-title>
+                <v-list-item-subtitle>
+                  {{ formatDate(submission.editDate) }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+
             <v-list-item>
               <v-list-item-icon>
                 <v-icon color="accent">
-                  mdi-file-download
+                  mdi-file-send-outline
+                </v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>Article Submitted</v-list-item-title>
+                <v-list-item-subtitle>
+                  {{ submission.isSubmitted }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon color="accent">
+                  mdi-file-star-outline
+                </v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>Article Selected for Publication</v-list-item-title>
+                <v-list-item-subtitle>
+                  {{ submission.toBePublished }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon color="accent">
+                  mdi-file-download-outline
                 </v-icon>
               </v-list-item-icon>
 
@@ -55,6 +103,25 @@
               </v-list-item-content>
             </v-list-item>
           </v-list>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              color="accent"
+              text
+              right
+              @click="toggleStatus"
+            >
+              Submit Article
+            </v-btn>
+            <v-btn
+              color="accent"
+              text
+              right
+              @click="loadYear"
+            >
+              Edit Article
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>

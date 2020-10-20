@@ -2,7 +2,10 @@ query($articleId: ID!) {
   getArticle(articleId: $articleId){
     title
     createdDate
+    editDate
     faculty
+    isSubmitted
+    toBePublished
     submittedBy {
       firstName
       lastName
