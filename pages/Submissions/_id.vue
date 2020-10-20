@@ -110,6 +110,15 @@
           <v-card-actions>
             <v-spacer />
             <v-btn
+              v-if="user.role === 'COORDINATOR'"
+              color="accent"
+              text
+              right
+            >
+              Submit Article
+            </v-btn>
+            <v-btn
+              v-if="user.role === 'STUDENT'"
               color="accent"
               text
               right
@@ -229,7 +238,9 @@ export default {
         }
       })
         .then(({ data }) => {
-          this.$apollo.queries.submission.refetch()
+          this.$apollo.queries.submission.refetch({
+            articleId: this.sub
+          })
           this.$nuxt.$loading.finish()
           Swal.fire({
             icon: 'success',
