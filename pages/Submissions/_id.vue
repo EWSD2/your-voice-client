@@ -115,7 +115,7 @@
               text
               right
             >
-              Submit Article
+              Select Article
             </v-btn>
             <v-btn
               v-if="user.role === 'STUDENT' && submission.isSubmitted === false"

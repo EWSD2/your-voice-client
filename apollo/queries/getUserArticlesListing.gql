@@ -1,0 +1,10 @@
+query($userId:ID!){
+  getUserArticles(userId: $userId) {
+    _id
+    title
+    createdDate
+    picture {
+      path
+    }
+  }
+}

@@ -1,0 +1,18 @@
+query(
+  $faculty: String!
+){
+  getFacultyArticles(
+    faculty: $faculty
+  ){
+    _id
+    title
+    createdDate
+    submittedBy {
+      firstName
+      lastName
+    }
+    picture {
+      path
+    }
+  }
+}
