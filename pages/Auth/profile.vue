@@ -28,7 +28,7 @@
                     <v-list-item-title class="display-1 info--text">
                       {{ user.firstName }} {{ user.lastName }}
                     </v-list-item-title>
-                    <v-list-item-subtitle class="subtitle-1 white--text">
+                    <v-list-item-subtitle class="overline white--text">
                       <strong>
                         {{ user.role }}
                       </strong>
@@ -51,10 +51,23 @@
         md="10"
         offset-md="1"
       >
-        <h1 class="text-center secondary--text">
-          {{ submissions.length }} Submissions!
-        </h1>
         <v-row>
+          <v-col
+            cols="12"
+          >
+            <h1
+              v-if="submissions.length >= 2"
+              class="text-center secondary--text"
+            >
+              {{ submissions.length }} Submissions!
+            </h1>
+            <h1
+              v-else
+              class="text-center secondary--text"
+            >
+              {{ submissions.length }} Submission!
+            </h1>
+          </v-col>
           <v-col
             v-for="sub in submissions"
             :key="sub._id"
