@@ -118,7 +118,7 @@
               Submit Article
             </v-btn>
             <v-btn
-              v-if="user.role === 'STUDENT'"
+              v-if="user.role === 'STUDENT' && submission.isSubmitted === false"
               color="accent"
               text
               right
