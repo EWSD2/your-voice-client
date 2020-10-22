@@ -25,7 +25,7 @@
               </v-list-item-group>
             </v-list>
             <v-pagination
-              v-if="academicYears.length > 10"
+              v-if="academicYears.length > perPage"
               v-model="page"
               :length="Math.ceil(academicYears.length/perPage)"
             />
