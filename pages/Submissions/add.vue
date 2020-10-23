@@ -19,7 +19,7 @@
           elevation="8"
         >
           <v-card-title class="headline secondary--text">
-            Make a Submission
+            Create an Article
           </v-card-title>
           <v-form
             ref="form"
@@ -119,7 +119,7 @@
                     :disabled="!isFormValid"
                     type="submit"
                   >
-                    Make Submission
+                    Create Article
                   </v-btn>
                 </v-card-actions>
               </v-col>
