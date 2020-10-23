@@ -7,8 +7,12 @@ query($articleId: ID!) {
     isSubmitted
     toBePublished
     submittedBy {
+      _id
       firstName
       lastName
+    }
+    academicYear {
+      submissionClose
     }
     article{
       path
