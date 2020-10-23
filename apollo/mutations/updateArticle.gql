@@ -1,0 +1,13 @@
+mutation(
+  $articleId: ID!
+  $editDate: String!
+  $newArticle: MediaInput!
+){
+  updateArticle(
+    articleId: $articleId,
+    editDate: $editDate,
+    newArticle: $newArticle
+  ) {
+    _id
+  }
+}

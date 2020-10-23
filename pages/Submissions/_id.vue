@@ -127,16 +127,174 @@
               Submit Article
             </v-btn>
             <v-btn
+              v-if="new Date().getTime() < submission.academicYear.submissionClose"
               color="accent"
               text
               right
+              @click="editArticleDialog = true"
             >
               Edit Article
+            </v-btn>
+            <v-btn
+              v-if="submission.submittedBy._id === user._id"
+              class="error--text"
+              text
+              right
+            >
+              Delete Article
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
+
+    <!-- Edit Article Dialog -->
+    <!-- <v-dialog
+      v-model="editArticleDialog"
+      persistent
+      max-width="650px"
+    >
+      <v-card
+        sm="12"
+        md="8"
+        offset-md="2"
+        shaped
+      >
+        <v-card-title class="headline secondary--text">
+          Update Article
+        </v-card-title>
+        <v-row>
+          <v-col
+            cols="12"
+          >
+            <v-form
+              ref="form"
+              v-model="isFormValid"
+              lazy-validation
+              @submit.prevent="updateArticle"
+            >
+              <v-row>
+                <v-col
+                  cols="10"
+                  md="8"
+                  offset="1"
+                  offset-md="2"
+                >
+                  <v-file-input
+                    v-model="article"
+                    :rules="articleRules"
+                    show-size
+                    accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    placeholder="Select your article"
+                    label="Article"
+                    required
+                  />
+                </v-col>
+                <v-col
+                  cols="10"
+                  md="8"
+                  offset="1"
+                  offset-md="2"
+                >
+                  <v-card-actions>
+                    <v-spacer />
+                    <v-btn
+                      :disabled="!isFormValid"
+                      class="accent--text"
+                      text
+                      type="submit"
+                    >
+                      Update Article
+                    </v-btn>
+                    <v-btn
+                      class="error--text"
+                      text
+                      right
+                      @click="editArticleDialog = false"
+                    >
+                      Cancel
+                    </v-btn>
+                  </v-card-actions>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-dialog> -->
+    <v-dialog
+      v-model="editArticleDialog"
+      persistent
+      max-width="650px"
+    >
+      <v-card
+        sm="12"
+        md="8"
+        offset-md="2"
+        shaped
+      >
+        <v-card-title class="headline secondary--text">
+          Update Article
+        </v-card-title>
+        <v-row>
+          <v-col
+            cols="12"
+          >
+            <v-form
+              ref="form"
+              v-model="isFormValid"
+              lazy-validation
+              @submit.prevent="updateArticle"
+            >
+              <v-row>
+                <v-col
+                  cols="10"
+                  md="8"
+                  offset="1"
+                  offset-md="2"
+                >
+                  <v-file-input
+                    v-model="article"
+                    :rules="articleRules"
+                    show-size
+                    accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    placeholder="Select your article"
+                    label="Article"
+                    required
+                  />
+                </v-col>
+                <v-col
+                  cols="10"
+                  md="8"
+                  offset="1"
+                  offset-md="2"
+                >
+                  <v-card-actions>
+                    <v-spacer />
+                    <v-btn
+                      :disabled="!isFormValid"
+                      class="accent--text"
+                      text
+                      type="submit"
+                    >
+                      Update Article
+                    </v-btn>
+                    <v-btn
+                      class="error--text"
+                      text
+                      right
+                      @click="editArticleDialog = false"
+                    >
+                      Cancel
+                    </v-btn>
+                  </v-card-actions>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -144,6 +302,7 @@
 import { mapGetters } from 'vuex'
 import GET_ARTICLE from '~/apollo/queries/getArticle.gql'
 import SUBMIT_ARTICLE from '~/apollo/mutations/submitArticle.gql'
+import UPDATE_ARTICLE from '~/apollo/mutations/updateArticle.gql'
 const Swal = require('sweetalert2')
 export default {
   name: 'SubmissionDetails',
@@ -158,6 +317,9 @@ export default {
           faculty: ''
         },
         createdDate: '',
+        academicYear: {
+          submissionClose: ''
+        },
         article: {
           path: ''
         },
@@ -169,11 +331,17 @@ export default {
   },
 
   data: () => ({
-    editArticleDialog: false
+    editArticleDialog: false,
+    isFormValid: true,
+    canSubmit: true,
+    article: null,
+    articleRules: [
+      article => !!article || 'Please select the article to be submitted'
+    ]
   }),
 
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user', 'err'])
   },
 
   watch: {
@@ -252,6 +420,75 @@ export default {
           this.$nuxt.$loading.finish()
           this.$store.commit('setError', err)
         })
+    },
+
+    async uploadFile (file, username) {
+      const storageRef = this.$fireStorage.ref(`/submissions/${username}/${file.name}`)
+      let url
+      try {
+        await storageRef.put(file)
+        url = await storageRef.getDownloadURL()
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: `${err.message}`
+        })
+      }
+      return {
+        filename: file.name,
+        mimetype: file.type,
+        path: url
+      }
+    },
+
+    async deleteFile (path) {
+      const storageRef = this.$fireStorage.refFromURL(path)
+      try {
+        await storageRef.delete()
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: `${err.message}`
+        })
+      }
+    },
+
+    async updateArticle () {
+      if (this.$refs.form.validate()) {
+        this.$nuxt.$loading.start()
+        const username = this.user.username
+        const articleId = this.sub
+        const article = this.article
+        const oldArticle = this.submission.article.path
+
+        try {
+          await this.deleteFile(oldArticle)
+          const articleDetails = await this.uploadFile(article, username)
+          await this.$apollo.mutate({
+            mutation: UPDATE_ARTICLE,
+            variables: {
+              articleId,
+              editDate: new Date().toISOString(),
+              newArticle: articleDetails
+            }
+          })
+            .then(({ data }) => {
+              // this.submission = data.updateArticle
+              this.$apollo.queries.submission.refetch()
+              this.$nuxt.$loading.finish()
+              this.editArticleDialog = false
+            })
+        } catch (err) {
+          this.$nuxt.$loading.finish()
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: `${err.message}`
+          })
+        }
+      }
     }
   },
 
