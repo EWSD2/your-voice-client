@@ -1,5 +1,10 @@
 <template>
   <v-container text-center class="secondary--text">
+    <v-row v-if="error">
+      <v-col>
+        <form-alert :message="error.message" />
+      </v-col>
+    </v-row>
     <v-row wrap>
       <v-col
         sm="12"
@@ -140,6 +145,7 @@
               class="error--text"
               text
               right
+              @click="confirmDeleteArticle"
             >
               Delete Article
             </v-btn>
@@ -149,79 +155,6 @@
     </v-row>
 
     <!-- Edit Article Dialog -->
-    <!-- <v-dialog
-      v-model="editArticleDialog"
-      persistent
-      max-width="650px"
-    >
-      <v-card
-        sm="12"
-        md="8"
-        offset-md="2"
-        shaped
-      >
-        <v-card-title class="headline secondary--text">
-          Update Article
-        </v-card-title>
-        <v-row>
-          <v-col
-            cols="12"
-          >
-            <v-form
-              ref="form"
-              v-model="isFormValid"
-              lazy-validation
-              @submit.prevent="updateArticle"
-            >
-              <v-row>
-                <v-col
-                  cols="10"
-                  md="8"
-                  offset="1"
-                  offset-md="2"
-                >
-                  <v-file-input
-                    v-model="article"
-                    :rules="articleRules"
-                    show-size
-                    accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                    placeholder="Select your article"
-                    label="Article"
-                    required
-                  />
-                </v-col>
-                <v-col
-                  cols="10"
-                  md="8"
-                  offset="1"
-                  offset-md="2"
-                >
-                  <v-card-actions>
-                    <v-spacer />
-                    <v-btn
-                      :disabled="!isFormValid"
-                      class="accent--text"
-                      text
-                      type="submit"
-                    >
-                      Update Article
-                    </v-btn>
-                    <v-btn
-                      class="error--text"
-                      text
-                      right
-                      @click="editArticleDialog = false"
-                    >
-                      Cancel
-                    </v-btn>
-                  </v-card-actions>
-                </v-col>
-              </v-row>
-            </v-form>
-          </v-col>
-        </v-row>
-      </v-card>
-    </v-dialog> -->
     <v-dialog
       v-model="editArticleDialog"
       persistent
@@ -303,6 +236,8 @@ import { mapGetters } from 'vuex'
 import GET_ARTICLE from '~/apollo/queries/getArticle.gql'
 import SUBMIT_ARTICLE from '~/apollo/mutations/submitArticle.gql'
 import UPDATE_ARTICLE from '~/apollo/mutations/updateArticle.gql'
+import DELETE_ARTICLE from '~/apollo/mutations/deleteArticle.gql'
+import GET_USER_ARTICLES from '~/apollo/queries/getUserArticles.gql'
 const Swal = require('sweetalert2')
 export default {
   name: 'SubmissionDetails',
@@ -341,7 +276,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters(['user', 'err'])
+    ...mapGetters(['user', 'error'])
   },
 
   watch: {
@@ -475,7 +410,6 @@ export default {
             }
           })
             .then(({ data }) => {
-              // this.submission = data.updateArticle
               this.$apollo.queries.submission.refetch()
               this.$nuxt.$loading.finish()
               this.editArticleDialog = false
@@ -489,6 +423,66 @@ export default {
           })
         }
       }
+    },
+
+    confirmDeleteArticle () {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: `Delete ${this.submission.title}? You won't be able to revert this!`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ff5722',
+        cancelButtonColor: '#44449b',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deleteArticle()
+        }
+      })
+    },
+
+    async deleteArticle () {
+      const article = this.submission.article.path
+      const picture = this.submission.picture.path
+      const articleId = this.sub
+
+      this.$nuxt.$loading.start()
+
+      await this.$apollo.mutate({
+        mutation: DELETE_ARTICLE,
+        variables: {
+          articleId
+        },
+        update: (store, { data: { deleteArticle } }) => {
+          const data = store.readQuery({ query: GET_USER_ARTICLES })
+          const removed = data.find(article => article._id === articleId)
+          data.pop(data.indexOf(removed))
+
+          store.writeQuery({ query: GET_USER_ARTICLES, data })
+        }
+      })
+        .then(async ({ data }) => {
+          if (data.deleteArticle._id) {
+            await this.deleteFile(article)
+
+            if (picture) {
+              await this.deleteFile(picture)
+            }
+
+            this.$nuxt.$loading.finish()
+
+            this.$router.push('/submissions/')
+          }
+        })
+        .catch((err) => {
+          this.$nuxt.$loading.finish()
+          this.$store.commit('setError', err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: `${err.message}`
+          })
+        })
     }
   },
 
