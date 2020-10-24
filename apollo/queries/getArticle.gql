@@ -20,5 +20,12 @@ query($articleId: ID!) {
     picture{
       path
     }
+    messages{
+      messageUser{
+        username
+      }
+      messageDate
+      messageBody
+    }
   }
 }
