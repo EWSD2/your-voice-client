@@ -1,0 +1,28 @@
+mutation(
+  $articleId: ID!
+){
+  selectForPublication(
+    articleId: $articleId
+  ){
+    title
+    createdDate
+    editDate
+    faculty
+    isSubmitted
+    toBePublished
+    submittedBy {
+      _id
+      firstName
+      lastName
+    }
+    academicYear {
+      submissionClose
+    }
+    article{
+      path
+    }
+    picture{
+      path
+    }
+  }
+}

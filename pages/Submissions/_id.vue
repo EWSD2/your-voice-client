@@ -115,12 +115,13 @@
           <v-card-actions>
             <v-spacer />
             <v-btn
-              v-if="user.role === 'COORDINATOR'"
+              v-if="user.role === 'COORDINATOR' && submission.toBePublished === false"
               color="accent"
               text
               right
+              @click="publishArticle"
             >
-              Select Article
+              Select for Publication
             </v-btn>
             <v-btn
               v-if="user.role === 'STUDENT' && submission.isSubmitted === false"
@@ -238,7 +239,9 @@ import SUBMIT_ARTICLE from '~/apollo/mutations/submitArticle.gql'
 import UPDATE_ARTICLE from '~/apollo/mutations/updateArticle.gql'
 import DELETE_ARTICLE from '~/apollo/mutations/deleteArticle.gql'
 import GET_USER_ARTICLES from '~/apollo/queries/getUserArticles.gql'
+import SELECT_FOR_PUBLICATION from '~/apollo/mutations/selectForPublication.gql'
 const Swal = require('sweetalert2')
+
 export default {
   name: 'SubmissionDetails',
   asyncData ({ params }) {
@@ -483,6 +486,41 @@ export default {
             text: `${err.message}`
           })
         })
+    },
+
+    async publishArticle () {
+      const articleId = this.sub
+
+      this.$nuxt.$loading.start()
+
+      await this.$apollo.mutate({
+        mutation: SELECT_FOR_PUBLICATION,
+        variables: {
+          articleId
+        },
+        update: (store, { data: { selectForPublication } }) => {
+          const data = selectForPublication
+          store.writeQuery({ query: GET_ARTICLE, data })
+        }
+      })
+        .then(async ({ data }) => {
+          await this.$apollo.queries.submission.refetch()
+          this.$nuxt.$loading.finish()
+          Swal.fire({
+            icon: 'success',
+            title: 'Straight to the Presses!',
+            text: `${this.submission.title} by ${this.submission.submittedBy.firstName} ${this.submission.submittedBy.lastName} has been selected for publication.`
+          })
+        })
+        .catch((err) => {
+          this.$nuxt.$loading.finish()
+          this.$store.commit('setError', err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: `${err.message}`
+          })
+        })
     }
   },
 
@@ -503,7 +541,7 @@ export default {
 
   head () {
     return {
-      title: this.sub ? `Submission ${this.sub} Details` : 'Submission Details'
+      title: this.sub ? `${this.submission.title} Details` : 'Submission Details'
     }
   }
 }
