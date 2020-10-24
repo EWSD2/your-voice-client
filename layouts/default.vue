@@ -189,7 +189,6 @@ export default {
       } else if (this.user && this.user.role === 'COORDINATOR') {
         items = [
           { icon: 'mdi-apps', title: 'Home', link: '/' },
-          { icon: 'mdi-view-grid-plus', title: 'View Selections', link: '/selections' },
           { icon: 'mdi-format-list-text', title: 'View Submissions', link: '/submissions' }
         ]
       } else if (this.user && this.user.role === 'STUDENT') {
@@ -233,7 +232,6 @@ export default {
         ]
       } else if (this.user && this.user.role === 'COORDINATOR') {
         items = [
-          { icon: 'mdi-view-grid-plus', title: 'View Selections', link: '/selections' },
           { icon: 'mdi-format-list-text', title: 'View Submissions', link: '/submissions' }
         ]
       } else if (this.user && this.user.role === 'STUDENT') {
