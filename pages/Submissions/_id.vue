@@ -133,7 +133,7 @@
               Submit Article
             </v-btn>
             <v-btn
-              v-if="new Date().getTime() < submission.academicYear.submissionClose"
+              v-if="new Date().getTime() < submission.academicYear.submissionClose && user.role === 'COORDINATOR' || user.role === 'STUDENT'"
               color="accent"
               text
               right
