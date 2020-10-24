@@ -1,0 +1,15 @@
+query{
+  getPublicationSelections{
+    _id
+    title
+    createdDate
+    faculty
+    submittedBy{
+      firstName
+      lastName
+    }
+    picture{
+      path
+    }
+  }
+}
