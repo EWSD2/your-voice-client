@@ -16,7 +16,7 @@
           v-else
           class="display-1 secondary--text"
         >
-          Faculty Submissions
+          {{ getPrettyFaculty(user.faculty) }} Submissions
         </h1>
         <v-row wrap>
           <v-col
@@ -122,7 +122,28 @@ export default {
   methods: {
     formatDate (date) {
       return new Date(parseInt(date)).toLocaleDateString()
+    },
+
+    getPrettyFaculty (faculty) {
+      let prettified
+      switch (faculty) {
+        case 'MATHEMATICS':
+          prettified = 'Mathematics'
+          break
+        case 'COMPSCI':
+          prettified = 'Computer Science'
+          break
+        case 'HUMANITIES':
+          prettified = 'Humanities'
+          break
+        case 'ADMIN':
+          prettified = 'Administration'
+          break
+      }
+
+      return prettified
     }
+
   },
 
   head: {
