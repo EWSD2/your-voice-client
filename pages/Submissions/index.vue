@@ -57,6 +57,8 @@
               v-if="articles.length > perPage"
               v-model="page"
               :length="Math.ceil(articles.length/perPage)"
+              class="pt-10"
+              color="accent"
             />
           </v-col>
         </v-row>
