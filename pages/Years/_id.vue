@@ -263,16 +263,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import moment from 'moment'
 import GET_ACADEMIC_YEAR from '~/apollo/queries/getAcademicYear.gql'
 import TOGGLE_YEAR_STATUS from '~/apollo/mutations/editAcademicYearStatus.gql'
 import UPDATE_YEAR_DATES from '~/apollo/mutations/editAcademicYearDates.gql'
-const dayjs = require('dayjs')
-const localizedFormat = require('dayjs/plugin/localizedFormat')
-const utc = require('dayjs/plugin/utc')
-const timezone = require('dayjs/plugin/timezone')
-dayjs.extend(localizedFormat)
-dayjs.extend(utc)
-dayjs.extend(timezone)
 export default {
   name: 'AcademicYear',
   asyncData ({ params }) {
@@ -331,7 +325,8 @@ export default {
   },
   methods: {
     formatDate (date) {
-      return new Date(parseInt(date)).toLocaleDateString()
+      // return new Date(parseInt(date)).toLocaleDateString()
+      return moment(new Date(parseInt(date))).utcOffset(4).format('ll')
     },
 
     async toggleStatus () {
@@ -392,7 +387,8 @@ export default {
     },
 
     buildDateString (date) {
-      return dayjs.tz(parseInt(date), 'America/Port_of_Spain').add(4, 'h').format('YYYY-MM-DD').toString()
+      // return new Date(parseInt(date)).toJSON()
+      return moment(new Date(parseInt(date))).utcOffset(4).format('L')
     }
   },
   head () {
