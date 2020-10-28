@@ -21,8 +21,12 @@ query($articleId: ID!) {
       path
     }
     messages{
+      _id
       messageUser{
-        username
+        _id
+        firstName
+        lastName
+        avatar
       }
       messageDate
       messageBody

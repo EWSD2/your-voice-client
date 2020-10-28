@@ -155,6 +155,83 @@
       </v-col>
     </v-row>
 
+    <!-- Message Form -->
+    <v-row
+      v-if="user.role === 'STUDENT' || user.role === 'COORDINATOR'"
+      class="mt-3 mb-3"
+    >
+      <v-col
+        sm="12"
+        md="10"
+        offset-md="1"
+      >
+        <v-form
+          ref="commentForm"
+          v-model="isCommentFormValid"
+          lazy-validation
+          @submit.prevent="addArticleMessage"
+        >
+          <v-textarea
+            v-model.trim="messageBody"
+            color="accent"
+            :rules="messageRules"
+            :counter="140"
+            prepend-icon="mdi-email"
+            :append-outer-icon="messageBody && 'mdi-send'"
+            label="Add a Comment"
+            required
+            @click:append-outer="addArticleMessage"
+          />
+        </v-form>
+      </v-col>
+    </v-row>
+
+    <!-- Message List -->
+    <v-row v-if="submission.messages != null">
+      <v-col
+        sm="12"
+        md="10"
+        offset-md="1"
+      >
+        <v-list subheader two-line>
+          <v-subheader>
+            Comments: ({{ submission.messages.length }})
+          </v-subheader>
+          <v-list-item
+            v-for="message in submission.messages"
+            :key="message._id"
+          >
+            <v-list-item-avatar>
+              <v-img
+                :src="message.messageUser.avatar"
+              />
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ message.messageBody }}
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                {{ message.messageUser.firstName }}
+                {{ message.messageUser.lastName }}
+                <span
+                  class="grey--text text-lighten-1 hidden-xs-only"
+                >
+                  {{ getTimeFromNow(message.messageDate) }}
+                </span>
+              </v-list-item-subtitle>
+            </v-list-item-content>
+            <v-list-item-action>
+              <v-icon
+                :color="checkIfUserMessage(message) ? 'accent' : 'warning'"
+              >
+                mdi-chat
+              </v-icon>
+            </v-list-item-action>
+          </v-list-item>
+        </v-list>
+      </v-col>
+    </v-row>
+
     <!-- Edit Article Dialog -->
     <v-dialog
       v-model="editArticleDialog"
@@ -234,12 +311,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import moment from 'moment'
 import GET_ARTICLE from '~/apollo/queries/getArticle.gql'
 import SUBMIT_ARTICLE from '~/apollo/mutations/submitArticle.gql'
 import UPDATE_ARTICLE from '~/apollo/mutations/updateArticle.gql'
 import DELETE_ARTICLE from '~/apollo/mutations/deleteArticle.gql'
 import GET_USER_ARTICLES from '~/apollo/queries/getUserArticles.gql'
 import SELECT_FOR_PUBLICATION from '~/apollo/mutations/selectForPublication.gql'
+import ADD_ARTICLE_MESSAGE from '~/apollo/mutations/addArticleMessage.gql'
 const Swal = require('sweetalert2')
 
 export default {
@@ -263,7 +342,8 @@ export default {
         },
         picture: {
           path: ''
-        }
+        },
+        messages: []
       }
     }
   },
@@ -271,10 +351,16 @@ export default {
   data: () => ({
     editArticleDialog: false,
     isFormValid: true,
+    isCommentFormValid: true,
     canSubmit: true,
     article: null,
     articleRules: [
       article => !!article || 'Please select the article to be submitted'
+    ],
+    messageBody: '',
+    messageRules: [
+      message => !!message || 'Come back when you have something to say!',
+      message => message.length <= 140 || 'Save your essay for the article.'
     ]
   }),
 
@@ -294,7 +380,8 @@ export default {
 
   methods: {
     formatDate (date) {
-      return new Date(parseInt(date)).toLocaleDateString()
+      // return new Date(parseInt(date)).toLocaleDateString()
+      return moment(new Date(parseInt(date))).format('ll')
     },
 
     formatBool (bool) {
@@ -521,6 +608,58 @@ export default {
             text: `${err.message}`
           })
         })
+    },
+
+    async addArticleMessage () {
+      if (this.$refs.commentForm.validate()) {
+        const articleId = this.sub
+        const userId = this.user._id
+        const messageBody = this.messageBody
+
+        await this.$apollo.mutate({
+          mutation: ADD_ARTICLE_MESSAGE,
+          variables: {
+            articleId,
+            userId,
+            messageBody
+          },
+          update: (store, { data: { addArticleMessage } }) => {
+            const data = store.readQuery({
+              query: GET_ARTICLE,
+              variables: { articleId: this.sub }
+            })
+
+            data.getArticle.messages.unshift(addArticleMessage)
+
+            store.writeQuery({
+              query: GET_ARTICLE,
+              variables: { articleId: this.sub },
+              data
+            })
+          }
+        })
+          .then(({ data }) => {
+            this.$refs.commentForm.reset()
+            this.$apollo.queries.submission.refetch()
+          })
+          .catch((err) => {
+            this.$nuxt.$loading.finish()
+            this.$store.commit('setError', err)
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: `${err.message}`
+            })
+          })
+      }
+    },
+
+    getTimeFromNow (time) {
+      return moment(new Date(parseInt(time))).fromNow()
+    },
+
+    checkIfUserMessage (message) {
+      return this.user && this.user._id === message.messageUser._id
     }
   },
 

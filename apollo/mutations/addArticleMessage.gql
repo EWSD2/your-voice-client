@@ -1,0 +1,20 @@
+mutation(
+  $articleId: ID!
+  $userId: ID!
+  $messageBody: String!
+){
+  addArticleMessage(
+    articleId:$articleId,
+    userId: $userId,
+    messageBody: $messageBody
+  ) {
+    _id
+    messageBody
+    messageDate
+    messageUser {
+      _id
+      username
+      avatar
+    }
+  }
+}
