@@ -1,10 +1,5 @@
 <template>
   <v-container text-center>
-    <v-row v-if="error">
-      <v-col>
-        <form-alert :message="error.message" />
-      </v-col>
-    </v-row>
     <v-row wrap>
       <v-col
         sm="12"
@@ -262,11 +257,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import moment from 'moment'
 import GET_ACADEMIC_YEAR from '~/apollo/queries/getAcademicYear.gql'
 import TOGGLE_YEAR_STATUS from '~/apollo/mutations/editAcademicYearStatus.gql'
 import UPDATE_YEAR_DATES from '~/apollo/mutations/editAcademicYearDates.gql'
+const Swal = require('sweetalert2')
 export default {
   name: 'AcademicYear',
   asyncData ({ params }) {
@@ -319,13 +314,11 @@ export default {
   computed: {
     statusColour () {
       return this.year.status === 'OPEN' ? 'success' : 'error'
-    },
-
-    ...mapGetters(['error'])
+    }
   },
+
   methods: {
     formatDate (date) {
-      // return new Date(parseInt(date)).toLocaleDateString()
       return moment(new Date(parseInt(date))).utcOffset(4).format('ll')
     },
 
@@ -347,7 +340,11 @@ export default {
           this.$apollo.queries.year.refetch()
         })
         .catch((err) => {
-          this.$store.commit('setError', err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: `${err.message}`
+          })
         })
     },
 
@@ -375,7 +372,11 @@ export default {
           this.$apollo.queries.year.refetch()
         })
         .catch((err) => {
-          this.$store.commit('setError', err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: `${err.message}`
+          })
         })
     },
 
@@ -391,6 +392,7 @@ export default {
       return moment(new Date(parseInt(date))).utcOffset(4).format('L')
     }
   },
+
   head () {
     return {
       title: this.yearId ? `Academic Year ${this.yearId} Details` : 'Academic Year Details'

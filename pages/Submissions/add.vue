@@ -1,10 +1,5 @@
 <template>
   <v-container text-center class="secondary--text">
-    <v-row v-if="error">
-      <v-col>
-        <form-alert :message="error.message" />
-      </v-col>
-    </v-row>
     <v-row>
       <v-col
         sm="12"
@@ -168,7 +163,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters(['error', 'user'])
+    ...mapGetters(['user'])
   },
 
   apollo: {
@@ -236,7 +231,11 @@ export default {
           })
           .catch((err) => {
             this.$nuxt.$loading.finish()
-            this.$store.commit('setError', err)
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: `${err.message}`
+            })
           })
       }
     },

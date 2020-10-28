@@ -205,6 +205,7 @@ export default {
       }
     }
   }),
+
   methods: {
     async createYear () {
       const title = this.title
@@ -230,7 +231,11 @@ export default {
           }
         })
         .catch((err) => {
-          this.$store.commit('setError', err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: `${err.message}`
+          })
         })
     },
 
@@ -246,6 +251,7 @@ export default {
       }
     }
   },
+
   head: {
     title: 'Add an Academic Year'
   }

@@ -365,7 +365,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters(['user', 'error'])
+    ...mapGetters(['user'])
   },
 
   watch: {
@@ -443,7 +443,11 @@ export default {
         })
         .catch((err) => {
           this.$nuxt.$loading.finish()
-          this.$store.commit('setError', err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: `${err.message}`
+          })
         })
     },
 
@@ -566,7 +570,6 @@ export default {
         })
         .catch((err) => {
           this.$nuxt.$loading.finish()
-          this.$store.commit('setError', err)
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
@@ -601,7 +604,6 @@ export default {
         })
         .catch((err) => {
           this.$nuxt.$loading.finish()
-          this.$store.commit('setError', err)
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
@@ -644,7 +646,6 @@ export default {
           })
           .catch((err) => {
             this.$nuxt.$loading.finish()
-            this.$store.commit('setError', err)
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
