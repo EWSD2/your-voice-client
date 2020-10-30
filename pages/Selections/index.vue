@@ -48,6 +48,13 @@
               class="pt-10"
               color="accent"
             />
+            <v-btn
+              class="mt-10"
+              color="accent"
+              @click="downloadSelections"
+            >
+              Download Selections
+            </v-btn>
           </v-col>
         </v-row>
       </v-col>
@@ -57,6 +64,7 @@
 
 <script>
 import GET_PUBLICATION_SELECTIONS from '~/apollo/queries/getPublicationSelections.gql'
+// const Swal = require('sweetalert2')
 export default {
   name: 'Selections',
 
@@ -111,6 +119,21 @@ export default {
       }
 
       return prettified
+    },
+
+    downloadSelections () {
+      const files = []
+      this.selections.forEach(async selection => files.push(await this.getFile(selection.article.path)))
+
+      console.log(files)
+    },
+
+    async getFile (path) {
+      const file = await this.$axios.$get(
+        path,
+        { responseType: 'blob' }
+      )
+      return file
     }
   },
 
