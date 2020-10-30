@@ -63,8 +63,9 @@
 </template>
 
 <script>
+import { saveAs } from 'file-saver'
 import GET_PUBLICATION_SELECTIONS from '~/apollo/queries/getPublicationSelections.gql'
-// const Swal = require('sweetalert2')
+const JSZip = require('jszip')
 export default {
   name: 'Selections',
 
@@ -122,10 +123,22 @@ export default {
     },
 
     downloadSelections () {
-      const files = []
-      this.selections.forEach(async selection => files.push(await this.getFile(selection.article.path)))
+      const zip = new JSZip()
+      let left = this.selections.length
 
-      console.log(files)
+      this.selections.forEach(async (selection, index) => {
+        let file = await this.getFile(selection.article.path)
+        zip.file(`${selection.submittedBy.firstName} ${selection.submittedBy.lastName}/${selection.title}/${selection.article.filename}`, file)
+        file = await this.getFile(selection.picture.path)
+        if (file) {
+          zip.file(`${selection.submittedBy.firstName} ${selection.submittedBy.lastName}/${selection.title}/${selection.picture.filename}`, file)
+        }
+        left--
+        if (left === 0) {
+          zip.generateAsync({ type: 'blob' })
+            .then(blob => saveAs(blob, 'selections.zip'))
+        }
+      })
     },
 
     async getFile (path) {
