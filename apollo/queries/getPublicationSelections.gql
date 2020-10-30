@@ -2,14 +2,20 @@ query{
   getPublicationSelections{
     _id
     title
-    createdDate
     faculty
     submittedBy{
       firstName
       lastName
     }
-    picture{
+    article {
+      filename
       path
+      mimetype
+    }
+    picture {
+      filename
+      path
+      filename
     }
   }
 }
