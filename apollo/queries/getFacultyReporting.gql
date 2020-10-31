@@ -1,0 +1,18 @@
+query getFacultyReporting(
+  $faculty: String!
+){
+  getFacultyArticles(faculty:$faculty){
+    title
+    isSubmitted
+    toBePublished
+    createdDate
+    editDate
+    academicYear {
+      title
+    }
+    messages{
+      _id
+      messageDate
+    }
+  }
+}
