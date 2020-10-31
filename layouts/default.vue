@@ -258,7 +258,7 @@ export default {
   methods: {
     handleSignoutUser () {
       this.$apolloHelpers.onLogout()
-      this.$store.commit('setsetIsAuthenticated', false)
+      this.$store.commit('setIsAuthenticated', false)
       this.$router.go()
     }
   }
