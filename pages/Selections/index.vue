@@ -144,7 +144,10 @@ export default {
     async getFile (path) {
       const file = await this.$axios.$get(
         path,
-        { responseType: 'blob' }
+        {
+          responseType: 'blob',
+          crossdomain: true
+        }
       )
       return file
     }
