@@ -22,7 +22,8 @@
     "jszip": "^3.5.0",
     "moment": "^2.29.1",
     "nuxt": "^2.14.5",
-    "sweetalert2": "^10.3.7"
+    "sweetalert2": "^10.3.7",
+    "vue-plotly": "^1.1.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.1.0",
