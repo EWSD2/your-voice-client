@@ -10,6 +10,9 @@
 
 <script>
 export default {
-  name: 'Reports'
+  name: 'Reports',
+  head: {
+    title: 'Reports'
+  }
 }
 </script>
