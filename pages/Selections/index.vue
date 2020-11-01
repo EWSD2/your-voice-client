@@ -66,7 +66,7 @@
 import { saveAs } from 'file-saver'
 import GET_PUBLICATION_SELECTIONS from '~/apollo/queries/getPublicationSelections.gql'
 const JSZip = require('jszip')
-const Swal = require('sweetalert2')
+// const Swal = require('sweetalert2')
 export default {
   name: 'Selections',
 
@@ -149,12 +149,14 @@ export default {
           responseType: 'blob'
         }
       ).catch((err) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: `${err.message}`
-        })
+        // Swal.fire({
+        //   icon: 'error',
+        //   title: 'Oops...',
+        //   text: `${err.message}`
+        // })
+        console.error(err)
       })
+
       return file
     }
   },
