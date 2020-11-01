@@ -99,10 +99,6 @@ export default {
   },
 
   methods: {
-    formatDate (date) {
-      return new Date(parseInt(date)).toLocaleDateString()
-    },
-
     getPrettyFaculty (faculty) {
       let prettified
       switch (faculty) {

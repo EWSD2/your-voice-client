@@ -91,7 +91,7 @@
                   {{ sub.title }}
                 </v-card-title>
                 <v-card-subtitle>
-                  submitted {{ new Date(parseInt(sub.createdDate)).toLocaleDateString() }}
+                  submitted {{ formatDate(sub.createdDate) }}
                 </v-card-subtitle>
               </v-card>
             </nuxt-link>
@@ -103,6 +103,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import GET_CURRENT_USER from '~/apollo/queries/getCurrentUser.gql'
 import GET_USER_ARTICLES from '~/apollo/queries/getUserArticles.gql'
 export default {
@@ -114,6 +115,10 @@ export default {
   }),
 
   methods: {
+    formatDate (date) {
+      return moment(new Date(parseInt(date))).utcOffset(4).format('ll')
+    },
+
     getPrettyFaculty (faculty) {
       let prettified
       switch (faculty) {

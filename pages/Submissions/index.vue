@@ -69,6 +69,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import moment from 'moment'
 export default {
   name: 'Submissions',
 
@@ -121,7 +122,7 @@ export default {
 
   methods: {
     formatDate (date) {
-      return new Date(parseInt(date)).toLocaleDateString()
+      return moment(new Date(parseInt(date))).utcOffset(4).format('ll')
     },
 
     getPrettyFaculty (faculty) {

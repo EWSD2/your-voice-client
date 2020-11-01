@@ -375,7 +375,6 @@ export default {
 
   methods: {
     formatDate (date) {
-      // return new Date(parseInt(date)).toLocaleDateString()
       return moment(new Date(parseInt(date))).format('ll')
     },
 

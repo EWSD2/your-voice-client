@@ -388,7 +388,6 @@ export default {
     },
 
     buildDateString (date) {
-      // return new Date(parseInt(date)).toJSON()
       return moment(new Date(parseInt(date))).utcOffset(4).format('L')
     }
   },
